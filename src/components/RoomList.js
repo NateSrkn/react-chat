@@ -26,12 +26,11 @@ class RoomList extends Component {
     
     handleSubmit(e){
         e.preventDefault();
-        if(!this.state.newRoomName) {return}
+        if(!this.state.newRoomName) {return alert("Please enter a room name!")}
         this.roomsRef.push({
             name : this.state.newRoomName
         })
         this.setState({
-            newRoomName: e.target.value,
             newRoomName: ''
         })
     }
