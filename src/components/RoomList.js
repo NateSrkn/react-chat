@@ -49,7 +49,7 @@ class RoomList extends Component {
                     onChange={(e) => this.handleChange(e)}
                     placeholder="Create a room"
                     ></input>
-                <button className="ion-plus-round">New Room</button>
+                <button className="ion-plus-round"></button>
             </form>
             {this.state.rooms.map((room, index) => 
                 <li key={index} className="room-choice">
