@@ -2,6 +2,12 @@ import React, {Component} from 'react';
 import * as firebase from 'firebase';
 
 class UserLogin extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            displayName: ''
+        }
+    }
     componentDidMount() {
         firebase.auth().onAuthStateChanged ( user => {
             this.props.setUser(user);
@@ -15,7 +21,8 @@ class UserLogin extends Component {
 
     signOut() {
         firebase.auth().signOut();
-        this.props.setUser({displayName: null});
+
+
     }
 
     render() {
@@ -25,7 +32,7 @@ class UserLogin extends Component {
                     <button className="log-button" id="sign-in" onClick={ () => this.signIn()}>Sign In</button>
                     <button className="log-button" id="sign-out" onClick={ () => this.signOut()}>Sign Out</button>
                 </nav>
-                <p>{this.props.activeUser || "Guest"}</p>
+                <p id="user">{this.props.activeUser}</p>
             </header>
         )
     }

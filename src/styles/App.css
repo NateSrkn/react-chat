@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css?family=Arvo:700|Quicksand');
+
+body {
+    background: #1B2432;
+}
+#logo {
+    color:#D33F49;
+    font-size:4em;
+    margin:10px;
+    padding-left:1%;
+    font-family: 'Arvo', serif;
+    font-weight: bolder;
+}
+.message-box {
+    height:100%;
+    width:85%;
+    display:inline-block;
+    position:absolute;
+    margin-left:15%;
+}
+
+#room-names {
+    background:#EFE9E7;
+    position: absolute;
+    height:100%;
+    width:18%;
+    padding:0;
+}
+
+#hidden {
+    display:none;
+}
+
+#show {
+    display:block;
+}

@@ -17,6 +17,14 @@ class RoomList extends Component {
             room.key = snapshot.key;
             this.setState({ rooms: this.state.rooms.concat( room )})
          });
+
+         this.roomsRef.on('child_removed', snapshot => {
+            const room = snapshot.val();
+            room.key = snapshot.key;
+            this.setState({ rooms: this.state.rooms.filter( function(value) {
+              return value.key !== room.key;
+            }) })
+          });
     }
 
     handleChange(e) {
@@ -34,6 +42,11 @@ class RoomList extends Component {
         })
     }
 
+    deleteRoom(e) {
+        e.preventDefault();
+        this.roomsRef.child(e.target.value).remove();
+      }
+
     selectRoom(room) {
         this.props.setActiveRoom(room)
     }
@@ -41,7 +54,14 @@ class RoomList extends Component {
     render () {
         return (
             <section className="room">
-              <form onSubmit={e => this.addRoom(e)}>
+            
+            {this.state.rooms.map((room, index) => 
+                <li key={index} className="room-choice">
+                    <button value={room.name} onClick={(e) => this.selectRoom(room)}>{room.name}</button>
+                    <button className="ion-android-close" value={room.key} onClick={(e) => this.deleteRoom(e)}></button>
+                </li>
+            )}
+              <form onSubmit={e => this.addRoom(e)} autoComplete="off">
                 <input 
                     id="new-room-input" 
                     type="text"
@@ -49,13 +69,8 @@ class RoomList extends Component {
                     onChange={(e) => this.handleChange(e)}
                     placeholder="Create a room"
                     ></input>
-                <button className="ion-plus-round"></button>
+                <button className="ion-android-add"></button>
             </form>
-            {this.state.rooms.map((room, index) => 
-                <li key={index} className="room-choice">
-                    <button value={room.name} onClick={(e) => this.selectRoom(room)}>{room.name}</button>
-                </li>
-            )}
         </section>
         )
     }

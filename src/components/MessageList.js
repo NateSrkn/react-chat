@@ -25,7 +25,7 @@ class MessageList extends Component {
 
     createMessage(e) {
         e.preventDefault();
-        if (!this.state.newMessageInput || this.props.activeRoom === null) {return};
+        if (!this.state.newMessageInput || this.props.activeRoom === null) {return alert("Theres no active room!")};
         this.roomsRef.push({
             content: this.state.newMessageInput,
             roomId: this.props.activeRoom.key,
@@ -49,7 +49,7 @@ class MessageList extends Component {
                             </li>
                         ))}
                 </ul>
-                <form id="message-form" onSubmit={(e) => this.createMessage(e)}>
+                <form id="message-form" onSubmit={(e) => this.createMessage(e)} autoComplete="off">
                     <input 
                         id="message-input" 
                         type="text" 
