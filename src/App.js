@@ -21,25 +21,25 @@ class App extends Component {
     super(props);
     this.state = {
       activeRoom: null,
-      activeUser: null
+      activeUser: "Guest"
     }
   }
 
   setActiveRoom(room) {
-    this.setState({activeRoom: room})
+      this.setState({activeRoom: room})
   }
 
    setUser(user) {
-    this.setState({activeUser: user.displayName})
+      if(!user) {this.setState({activeUser: "Guest"})} 
+      else {
+        this.setState({activeUser: user.displayName})
+      }
   } 
 
   render() {
     return (
       <div className="App">
-      <UserLogin 
-        setUser={(user) => this.setUser(user)}  
-        activeUser={this.state.activeUser}    
-      />
+  
       <ul id="room-names">
         <RoomList
           activeRoom={this.state.activeRoom}
@@ -51,6 +51,10 @@ class App extends Component {
           activeUser={this.state.activeUser} 
         />
       </ul>
+      <UserLogin 
+        setUser={(user) => this.setUser(user)}  
+        activeUser={this.state.activeUser}    
+      />
       </div>
     );
   }

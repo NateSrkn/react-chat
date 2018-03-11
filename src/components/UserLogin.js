@@ -15,7 +15,7 @@ class UserLogin extends Component {
 
     signOut() {
         firebase.auth().signOut();
-        this.props.setUser({displayName: null});
+        this.props.setUser({displayName: 'Guest'});
     }
 
     render() {
@@ -25,7 +25,7 @@ class UserLogin extends Component {
                     <button className="log-button" id="sign-in" onClick={ () => this.signIn()}>Sign In</button>
                     <button className="log-button" id="sign-out" onClick={ () => this.signOut()}>Sign Out</button>
                 </nav>
-                <p>{this.props.activeUser || "Guest"}</p>
+                <p>{this.props.activeUser}</p>
             </header>
         )
     }
