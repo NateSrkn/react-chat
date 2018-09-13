@@ -14,112 +14,36 @@ input, button {
 .round-input {
   border: 1px solid #8349EF;
   border-radius: 50px;
-  height: 35px;
-  padding: 20px;
+  padding: 10px;
   background: white; }
 
 #app {
   height: 100vh;
   width: 100%;
-  background-color: #D6C6C6;
-  display: flex;
-  align-items: center;
-  justify-content: center; }
-
-.content-container {
-  height: 95vh;
-  width: 78%;
-  margin: 0 3%;
-  background-color: #8349EF;
-  border: 1px solid black;
-  box-shadow: 5px 5px 5px #707070;
-  display: flex;
-  position: relative; }
+  background-color: #D6C6C6; }
 
 header {
   position: absolute;
-  top: 2%;
-  right: 2%;
-  z-index: 1; }
+  top: 0;
+  right: 0; }
   header nav button {
     margin-right: 15px; }
 
-.room-list {
-  background-color: white;
-  width: 0;
-  height: 100%;
-  transition: width 1s; }
-  .room-list .list-contain {
-    position: relative;
-    padding: 0 5%;
-    height: 100%;
-    opacity: 0;
-    transition: ease 1s; }
-    .room-list .list-contain .create-room .new-room-input {
-      position: absolute;
-      width: 90%;
-      bottom: 7%; }
-    .room-list .list-contain .room-choice {
-      display: flex;
-      padding: 5%;
-      position: relative; }
-      .room-list .list-contain .room-choice .room {
-        padding-right: 5%;
-        padding-top: 1%;
-        display: inline-block;
-        width: 95%; }
-      .room-list .list-contain .room-choice:after {
-        position: absolute;
-        content: '';
-        height: 3px;
-        background-color: black;
-        width: 100%;
-        bottom: 0;
-        left: 0; }
-
-.message-contain {
-  position: relative; }
-  .message-contain .room-header {
-    position: absolute;
-    font-size: 3vh;
-    width: 500px;
-    top: 2%;
-    left: 10vh; }
-  .message-contain .active-room {
-    position: absolute;
-    top: 0;
-    left: 5vh;
-    height: 100%;
-    width: 100vh; }
-    .message-contain .active-room .messages {
-      position: absolute;
-      bottom: 10%; }
-      .message-contain .active-room .messages .message {
-        padding: 5px 0; }
-  .message-contain .message-form {
-    position: absolute;
-    bottom: 2%;
-    width: 100%;
-    left: 0; }
-    .message-contain .message-form .send-button {
-      position: absolute;
-      right: 2%;
-      top: 25%; }
-
-.show-nav {
-  width: 300px; }
-  .show-nav .list-contain {
-    opacity: 1; }
+.content-container {
+  display: flex; }
 
 #toggle-nav {
-  position: relative;
+  position: absolute;
   transition: all 500ms ease-in-out;
   height: 50px;
-  width: 50px; }
+  width: 50px;
+  top: 0;
+  left: 0;
+  z-index: 1; }
   #toggle-nav span {
     position: absolute;
-    top: 50%;
-    left: 23%;
+    top: 20px;
+    left: 15px;
     height: 2px;
     width: 30px;
     background-color: black;
@@ -143,3 +67,55 @@ header {
       transform: rotate(45deg); }
     #toggle-nav.active span:after {
       transform: rotate(-45deg); }
+
+.room-list {
+  background-color: white;
+  position: absolute;
+  width: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: width 1s;
+  align-items: center;
+  z-index: 1; }
+  .room-list .room-choice {
+    display: flex; }
+    .room-list .room-choice .icon {
+      margin-left: auto; }
+  .room-list .list-contain {
+    opacity: 0;
+    transition: ease 200ms; }
+    .room-list .list-contain .create-room {
+      bottom: 0; }
+
+.show-nav {
+  width: 100%; }
+  .show-nav .list-contain {
+    opacity: 1; }
+
+.message-contain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: flex-end;
+  align-items: center;
+  margin: 0 5%;
+  width: 100%;
+  height: 100vh; }
+  .message-contain .active-room {
+    height: 94vh;
+    width: 100%;
+    position: relative; }
+    .message-contain .active-room .messages {
+      position: absolute;
+      bottom: 10vh; }
+    .message-contain .active-room .message-form {
+      position: absolute;
+      bottom: 0;
+      width: 100%; }
+      .message-contain .active-room .message-form .message-input {
+        width: 95%; }
+      .message-contain .active-room .message-form .send-button {
+        position: absolute;
+        right: 7%;
+        top: 10px; }
