@@ -25,7 +25,7 @@ class MessageList extends Component {
 
     createMessage(e) {
         e.preventDefault();
-        if (!this.state.newMessageInput || this.props.activeRoom === null) {return};
+        if (!this.state.newMessageInput || this.props.activeRoom === null) {return alert("Theres no active room!")};
         this.roomsRef.push({
             content: this.state.newMessageInput,
             roomId: this.props.activeRoom.key,
@@ -39,23 +39,32 @@ class MessageList extends Component {
 
     render() {
         return (
-            <div className="message-list">
-                <ul id="message-box">
-                    {this.props.activeRoom && this.state.messages
+            <div className="active-room">
+                <div className="messages">
+                    {
+                        this.props.activeRoom && this.state.messages
                         .filter(message => message.roomId === this.props.activeRoom.key)
                         .map((message, index) => (
-                            <li className="message" key={message.key}>
-                            {message.username}: {message.content} {message.sentAt}
-                            </li>
-                        ))}
-                </ul>
-                <form id="message-form" onSubmit={(e) => this.createMessage(e)}>
+                            <div className="message" key={message.key}>
+                                <h5>
+                                    {message.username}
+                                </h5>
+                                <p>
+                                    {message.content}
+                                </p>
+                            </div>
+                        ))
+                    }
+                </div>
+                <form className="message-form" onSubmit={(e) => this.createMessage(e)} autoComplete="off">
                     <input 
-                        id="message-input" 
-                        type="text" 
+                        className="message-input round-input"
+                        type="text"
+                        placeholder="Enter your message..."
                         value={this.state.newMessageInput}
-                        onChange={(e) => this.handleChange(e)} />
-                    <input id="send-button" type="submit" value="Send" />
+                        onChange={(e) => this.handleChange(e)}
+                    />
+                    <input className="send-button" type="submit" value="Send" />
                 </form>
             </div>
         )

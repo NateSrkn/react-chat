@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:600,700');
+
+$tan: #D6C6C6;
+$purple: #8349EF;
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    box-sizing: border-box;
+    font-size: 1.5vh;
+}
+
+input, button {
+    outline: none;
+    border:none;
+    background:none;
+}
+
+.round-input {
+    border: 1px solid $purple;
+    border-radius: 50px;
+    height: 35px;
+    padding: 20px;
+    background: white;
+}
+
+#app {
+    height:100vh;
+    width:100%;
+    background-color: $tan;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-container {
+    height: 95vh;
+    width: 78%;
+    margin: 0 3%;
+    background-color: $purple;
+    border: 1px solid black;
+    box-shadow: 5px 5px 5px #707070;
+    display:flex;
+    position: relative;
+}
+
+header {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    z-index: 1;
+
+    nav {
+        
+        button {
+            margin-right: 15px;
+        }
+    }
+}
+
+.room-list {
+    background-color: white;
+    width: 0;
+    height:100%;
+    transition: width 1s;
+
+    .list-contain {
+        position: relative;
+        padding:0 5%;
+        height:100%;
+        opacity: 0;
+        transition: ease 1s;
+
+        .create-room {
+
+            .new-room-input {
+                position: absolute;
+                width: 90%;
+                bottom: 7%;
+            }
+        }
+
+        .room-choice {
+            display: flex;
+            padding: 5%;
+            position: relative;
+
+            .room {
+                padding-right: 5%;
+                padding-top: 1%;
+                display: inline-block;
+                width: 95%;
+            }
+
+            &:after {
+                position: absolute;
+                content: '';
+                height: 3px;
+                background-color: black;
+                width: 100%;
+                bottom: 0;
+                left: 0;
+            }
+        }
+    }
+}
+
+.message-contain {
+    position: relative;
+    
+    .room-header {
+        position: absolute;
+        font-size: 3vh;
+        width: 500px;
+        top: 2%;
+        left: 10vh;
+    }
+
+    .active-room {
+        position: absolute;
+        top: 0;
+        left: 5vh;
+        height:100%;
+        width: 100vh;
+
+
+        .messages {
+            position: absolute;
+            bottom: 10%;
+
+            .message {
+                padding: 5px 0 ;
+            }
+        }
+    }
+
+    .message-form {
+        position: absolute;
+        bottom: 2%;
+        width: 100%;
+        left:0;
+        
+       
+
+        .send-button {
+            position: absolute;
+            right: 2%;
+            top:25%;
+        }
+    }
+}
+
+.show-nav {
+    width: 300px;
+
+    .list-contain {
+        opacity: 1;
+    }
+    
+}
+
+#toggle-nav {
+    position: relative;
+    transition: all 500ms ease-in-out;
+    height:50px;
+    width:50px;
+
+    
+    span {
+        position: absolute;
+        top:50%;
+        left: 23%;
+        height: 2px;
+        width: 30px;
+        background-color: black;
+        transition: all 500ms ease-in-out;
+
+        &:before, &:after {
+            content:'';
+            height: 2px;
+            width: 30px;
+            position: absolute;
+            background-color: black;
+            transition: all 500ms ease-in-out;
+        }
+
+        &:before {
+            top: 8px;
+        }
+
+        &:after {
+            bottom: 8px;
+        }
+    }
+
+    &.active {
+
+        span {
+            background-color: transparent;
+
+            &:before, &:after {
+                top:0;
+            }
+
+            &:before {
+                transform: rotate(45deg)
+            }
+
+            &:after {
+                transform: rotate(-45deg)
+            }
+            
+        }
+    }
+
+}
+

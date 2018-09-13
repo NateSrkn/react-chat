@@ -52,24 +52,27 @@ class RoomList extends Component {
 
     render () {
         return (
-            <section className="room">
-              <form onSubmit={e => this.addRoom(e)}>
-                <input 
-                    id="new-room-input" 
-                    type="text"
-                    value={this.state.newRoomName}
-                    onChange={(e) => this.handleChange(e)}
-                    placeholder="Create a room"
-                    ></input>
-                <button className="ion-plus-round"></button>
-            </form>
-            {this.state.rooms.map((room, index) => 
-                <li key={index} className="room-choice">
-                    <button value={room.name} onClick={(e) => this.selectRoom(room)}>{room.name}</button>
-                    <button value={room.key} onClick={(e) => this.deleteRoom(e)}></button>
-                </li>
-            )}
-        </section>
+            <div className="list-contain">
+                {
+                    this.state.rooms.map((room, index) => 
+                        <div key={index} className="room-choice">
+                            <p className="room" value={room.name} onClick={(e) => this.selectRoom(room)}>{room.name}</p>
+                            <button className="ion-android-close icon" value={room.key} onClick={(e) => this.deleteRoom(e)}></button>
+                        </div>
+                    )
+                }
+                <form className="create-room" onSubmit={(e) => this.addRoom(e)} autoComplete="off">
+                    <input 
+                        className="new-room-input round-input"
+                        type="text"
+                        maxLength="25"
+                        value={this.state.newRoomName}
+                        onChange={(e) => this.handleChange(e)}
+                        placeholder="Create a room..."
+                    />
+                </form>
+            </div>
+   
         )
     }
 }

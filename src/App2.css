@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:600,700");
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+  font-size: 1.5vh; }
+
+input, button {
+  outline: none;
+  border: none;
+  background: none; }
+
+.round-input {
+  border: 1px solid #8349EF;
+  border-radius: 50px;
+  padding: 10px;
+  background: white; }
+
+#app {
+  height: 100vh;
+  width: 100%;
+  background-color: #D6C6C6; }
+
+header {
+  position: absolute;
+  top: 0;
+  right: 0; }
+  header nav button {
+    margin-right: 15px; }
+
+.content-container {
+  display: flex; }
+
+#toggle-nav {
+  position: absolute;
+  transition: all 500ms ease-in-out;
+  height: 50px;
+  width: 50px;
+  top: 0;
+  left: 0;
+  z-index: 1; }
+  #toggle-nav span {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    height: 2px;
+    width: 30px;
+    background-color: black;
+    transition: all 500ms ease-in-out; }
+    #toggle-nav span:before, #toggle-nav span:after {
+      content: '';
+      height: 2px;
+      width: 30px;
+      position: absolute;
+      background-color: black;
+      transition: all 500ms ease-in-out; }
+    #toggle-nav span:before {
+      top: 8px; }
+    #toggle-nav span:after {
+      bottom: 8px; }
+  #toggle-nav.active span {
+    background-color: transparent; }
+    #toggle-nav.active span:before, #toggle-nav.active span:after {
+      top: 0; }
+    #toggle-nav.active span:before {
+      transform: rotate(45deg); }
+    #toggle-nav.active span:after {
+      transform: rotate(-45deg); }
+
+.room-list {
+  background-color: white;
+  position: absolute;
+  width: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: width 1s;
+  align-items: center;
+  z-index: 1; }
+  .room-list .room-choice {
+    display: flex; }
+    .room-list .room-choice .icon {
+      margin-left: auto; }
+  .room-list .list-contain {
+    opacity: 0;
+    transition: ease 200ms; }
+    .room-list .list-contain .create-room {
+      bottom: 0; }
+
+.show-nav {
+  width: 100%; }
+  .show-nav .list-contain {
+    opacity: 1; }
+
+.message-contain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: flex-end;
+  align-items: center;
+  margin: 0 5%;
+  width: 100%;
+  height: 100vh; }
+  .message-contain .active-room {
+    height: 94vh;
+    width: 100%;
+    position: relative; }
+    .message-contain .active-room .messages {
+      position: absolute;
+      bottom: 10vh; }
+    .message-contain .active-room .message-form {
+      position: absolute;
+      bottom: 0;
+      width: 100%; }
+      .message-contain .active-room .message-form .message-input {
+        width: 95%; }
+      .message-contain .active-room .message-form .send-button {
+        position: absolute;
+        right: 7%;
+        top: 10px; }

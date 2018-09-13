@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:600,700');
+
+$tan: #D6C6C6;
+$purple: #8349EF;
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    box-sizing: border-box;
+    font-size: 1.5vh;
+}
+
+input, button {
+    outline: none;
+    border:none;
+    background:none;
+}
+
+.round-input {
+    border: 1px solid $purple;
+    border-radius: 50px;
+    padding:10px;
+    background: white;
+}
+
+#app {
+    height:100vh;
+    width: 100%;
+    background-color: $tan;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    nav {
+
+        button {
+            margin-right: 15px;
+        }
+    }
+}
+
+.content-container {
+    display: flex;
+}
+
+#toggle-nav {
+    position: absolute;
+    transition: all 500ms ease-in-out;
+    height: 50px;
+    width: 50px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+    span {
+        position: absolute;
+        top: 20px;
+        left: 15px;
+        height: 2px;
+        width: 30px;
+        background-color: black;
+        transition: all 500ms ease-in-out;
+        
+        &:before, &:after {
+            content: '';
+            height: 2px;
+            width: 30px;
+            position: absolute;
+            background-color: black;
+            transition: all 500ms ease-in-out;
+        }
+
+        &:before {
+            top:8px;
+        }
+
+        &:after {
+            bottom: 8px;
+        }
+    }
+
+    &.active {
+
+        span {
+            background-color: transparent;
+
+            &:before, &:after {
+                top:0;
+            }
+
+            &:before {
+                transform: rotate(45deg)
+            }
+
+            &:after {
+                transform: rotate(-45deg)
+            }
+            
+        }
+    }
+}
+
+.room-list {
+    background-color: white;
+    position: absolute;
+    width: 0;
+    height:100vh;
+    display:flex;
+    flex-direction: column;
+    transition: width 1s;
+    align-items: center;
+    z-index: 1;
+
+    .room-choice {
+        display: flex;
+
+        .icon {
+            margin-left: auto;
+        }
+    }
+
+    .list-contain {
+        opacity: 0;
+        transition: ease 200ms;
+
+        .create-room {
+            bottom: 0;
+        }
+    }
+}
+
+.show-nav {
+    width: 100%;
+
+    .list-contain {
+        opacity: 1;
+    }
+    
+}
+
+.message-contain {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: flex-end;
+    align-items: center;
+    margin: 0 5%;
+    width: 100%;
+    height:100vh;
+
+    .active-room {
+        height:94vh;
+        width: 100%;
+        position: relative;
+
+        .messages {
+            position: absolute;
+            bottom: 10vh;
+        }
+
+        .message-form {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+
+            .message-input {
+                width: 95%;
+            }
+
+            .send-button {
+                position: absolute;
+                right: 7%;
+                top: 10px;
+            }
+        }
+    }
+}
+
