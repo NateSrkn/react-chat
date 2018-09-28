@@ -7,3 +7,7 @@ This project was created using React and Firebase
   <li>Create chat rooms based on whatever the user wants.</li>
   <li>Chat back and forth with other users.</li>
 </ul>
+
+
+## See it live
+https://immense-taiga-32406.herokuapp.com/
