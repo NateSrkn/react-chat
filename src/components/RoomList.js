@@ -1,79 +1,89 @@
-import React, {Component} from 'react';
-import * as firebase from 'firebase';
+import React, { useState, useContext, useEffect } from 'react';
+import { FirebaseContext } from '../utils/firebase'
+import { Link } from 'react-router-dom'
+import 'firebase/firestore'
 
-class RoomList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            rooms: [],
-            newRoomName: ""
-        }
-        this.roomsRef = firebase.database().ref('rooms');
-    }
+const RoomList = ({ activeRoom, activeUser, setActiveRoom }) => {
+    const firebase = useContext(FirebaseContext)
+    const roomsRef = firebase.firestore().collection('rooms')
+    const [rooms, setRooms] = useState(null)
+    const [newRoomName, setNewRoomName] = useState('')
 
-    componentDidMount() {
-        this.roomsRef.on('child_added', snapshot => {
-            const room = snapshot.val();
-            room.key = snapshot.key;
-            this.setState({ rooms: this.state.rooms.concat( room )})
-         });
-
-         this.roomsRef.on('child_removed', snapshot => {
-            const room = snapshot.val();
-            room.key = snapshot.key;
-            this.setState({ rooms: this.state.rooms.filter( function(value) {
-              return value.key !== room.key;
-            }) })
-          });
-    }
-
-    handleChange(e) {
-        this.setState({ newRoomName: e.target.value });
-      }
-    
-    addRoom(e){
-        e.preventDefault();
-        if(!this.state.newRoomName) {return alert("Please enter a room name!")}
-        this.roomsRef.push({
-            name : this.state.newRoomName
+    useEffect(() => {
+        roomsRef.onSnapshot(snapshot => {
+            let data = []
+            snapshot.forEach(doc => {
+                data.push({ id: doc.id, ...doc.data()})
+            })
+            setRooms(data)
         })
-        this.setState({
-            newRoomName: ''
+    }, [])
+
+    const addRoom = (event) => {
+        event.preventDefault()
+        if(!newRoomName || !activeUser) return
+        roomsRef.add({
+            name: newRoomName,
+            createdBy: activeUser
         })
+        setNewRoomName('')
     }
 
-    deleteRoom(e) {
-        e.preventDefault();
-        this.roomsRef.child(e.target.value).remove();
-      }
-
-    selectRoom(room) {
-        this.props.setActiveRoom(room)
+    const removeRoom = (roomId) => {
+        const response = window.confirm('Are you sure you want to delete this room?')
+        if(response) roomsRef.doc(roomId).delete()
     }
 
-    render () {
-        return (
-            <section className="room">
-            
-            {this.state.rooms.map((room, index) => 
-                <li key={index} className="room-choice">
-                    <button value={room.name} onClick={(e) => this.selectRoom(room)}>{room.name}</button>
-                    <button className="ion-android-close" value={room.key} onClick={(e) => this.deleteRoom(e)}></button>
+    const handleChange = (event) => {
+        event.preventDefault()
+        setNewRoomName(event.target.value)
+    }
+
+    const List = () => {
+        return(
+            rooms.map(room => (
+                <li onClick={() => setActiveRoom(room)} key={room.id}>
+                    <Link to={`/room/${room.id}`}>
+                        {room.name}
+                    </Link>
+                    <button disabled={activeRoom.id == room.id ? true : false} className="button" onClick={() => removeRoom(room.id)}>
+                        Delete
+                    </button>
                 </li>
-            )}
-              <form onSubmit={e => this.addRoom(e)} autoComplete="off">
-                <input 
-                    id="new-room-input" 
-                    type="text"
-                    value={this.state.newRoomName}
-                    onChange={(e) => this.handleChange(e)}
-                    placeholder="Create a room"
-                    ></input>
-                <button className="ion-android-add"></button>
-            </form>
-        </section>
+            ))
         )
     }
+
+    return (
+        <section className="section">
+            <aside className="menu">
+                <p className="menu-label is-pulled-left">
+                    Rooms
+                    <i class="fas fa-plus is-pulled-right"></i>
+                </p>
+                <ul className="menu-list">
+                    {rooms ? <List /> : 'Loading' }
+                </ul>
+                <form onSubmit={addRoom} style={{paddingTop: '20px'}}>
+                    <div className="field has-addons">
+                        <div className="control">
+                            <input 
+                            className="input"
+                            placeholder="Enter a room name"
+                            onChange={handleChange}
+                            value={newRoomName}
+                            type="text" />
+                        </div>
+                        <div className="control">
+                            <button className="button is-primary">
+                                Add Room
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </aside>
+        </section>
+    )
 }
 
 export default RoomList
