@@ -10,4 +10,5 @@ This project was created using React and Firebase
 
 
 ## See it live
-https://immense-taiga-32406.herokuapp.com/
+https://jovial-engelbart-4eea58.netlify.com (Current version)
+https://immense-taiga-32406.herokuapp.com/ (Previous version)
