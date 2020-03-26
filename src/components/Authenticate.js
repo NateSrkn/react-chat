@@ -13,7 +13,7 @@ const Authenticate = ({ activeUser }) => {
   }
 
   return (
-    <div className="login-container">
+    <div className="login-container" style={{marginTop: 10}}>
       {activeUser ? 
       <Button onClick={() => signOut()}>
         Sign out

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import MessageList from './MessageList'
 import { TextInput } from './TextInput';
@@ -9,7 +9,13 @@ import * as moment from 'moment'
 const Room = ({ rooms, activeUser }) => {
   let { roomId } = useParams()
   const room = rooms.find(item => item.key === roomId)
+  let bottomOfMessages
   let [newMessage, setNewMessage] = useState('') 
+
+  useEffect(() => {
+    bottomOfMessages = document.getElementById('messages-bottom')
+    if (bottomOfMessages) bottomOfMessages.scrollIntoView()
+  })
 
   const handleChange = (event) => {
     setNewMessage(event.target.value)
@@ -23,6 +29,7 @@ const sendMessage = (event) => {
             sentBy: activeUser,
             sentAt: moment().format()
     })
+    if (bottomOfMessages) bottomOfMessages.scrollIntoView()
     setNewMessage('')
   }
 

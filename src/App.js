@@ -6,11 +6,14 @@ import { auth } from './utils/firebase'
 import './styles/main.scss'
 
 import { db } from './utils/firebase'
+import Authenticate from './components/Authenticate';
+import NavToggle from './components/NavToggle';
 
 const App = () => {
   const [rooms, setRooms] = useState([])
   const [activeRoom, setActiveRoom] = useState('')
   const [activeUser, setActiveUser] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     db.ref('rooms').on('value', snapshot => {
@@ -32,12 +35,21 @@ const App = () => {
   return(  
     <div className="App">
       <div className="page-layout">
-        <RoomList activeUser={activeUser} setActiveUser={setActiveUser} rooms={rooms} activeRoom={activeRoom} setActiveRoom={setActiveRoom} />
+        <RoomList 
+          rooms={rooms} 
+          activeUser={activeUser} 
+          setActiveUser={setActiveUser} 
+          activeRoom={activeRoom} 
+          setActiveRoom={setActiveRoom} 
+          isOpen={isOpen}
+          setIsOpen={setIsOpen} 
+          />
         <main className="main-container">
+          <NavToggle isOpen={isOpen} setIsOpen={setIsOpen} />
           <Switch>
             <Route exact path="/">
-              <div style={{fontSize: 20, margin: 'auto 0'}}>
-                {activeUser ? 'Select a room to chat' : 'Sign in to get started'}
+              <div className="welcome-message">
+                {activeUser ? `Hello ${activeUser}, select a room to chat` : <React.Fragment>Sign in to get started<Authenticate /></React.Fragment>}
               </div>
             </Route>
             <Route path="/room/:roomId">

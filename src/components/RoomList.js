@@ -5,8 +5,9 @@ import { TextInput } from './TextInput';
 import { db } from '../utils/firebase'
 import Authenticate from './Authenticate.js'
 import * as moment from 'moment'
+import NavToggle from './NavToggle';
 
-const RoomList = ({ rooms, activeRoom, setActiveRoom, activeUser, setActiveUser }) => {
+const RoomList = ({ rooms, activeRoom, setActiveRoom, activeUser, setActiveUser, isOpen, setIsOpen }) => {
     const [newRoomName, setNewRoomName] = useState('')
 
     const addRoom = (event) => {
@@ -50,7 +51,8 @@ const RoomList = ({ rooms, activeRoom, setActiveRoom, activeUser, setActiveUser 
     }
 
     return (
-        <div className="sidebar">
+        <div id="sidebar" className="sidebar">
+            <NavToggle isOpen={isOpen} setIsOpen={setIsOpen} />
             <div className="label">
                 Rooms
             </div>

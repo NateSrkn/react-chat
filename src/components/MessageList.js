@@ -26,6 +26,7 @@ const MessageList = ({ messagesObj }) => {
     return (
         <React.Fragment>
             {messages ? <List /> : 'Start a conversation'}
+            <div id="messages-bottom"></div>
         </React.Fragment>
     )
 }

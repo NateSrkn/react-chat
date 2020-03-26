@@ -24,8 +24,23 @@
   display: flex;
   justify-content: center;
   height: 100vh;
-}
 
+  .nav-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    font-size: 18px;
+    
+    .fa-times-circle {
+      display: none;
+    }
+  }
+}
+.welcome-message {
+  font-size: 1rem;
+  margin: auto 10px;
+}
 .page-layout {
   display: flex;
 }
@@ -43,4 +58,14 @@ ul {
   font-size: 14px;
   text-transform: uppercase;
   color: lightslategrey;
+}
+
+.navToggle {
+  cursor: pointer;
+}
+
+@media screen and (min-width: 550px) {
+  .nav-toggle {
+    display: none;
+  }
 }
