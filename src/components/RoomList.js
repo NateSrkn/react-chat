@@ -39,7 +39,7 @@ const RoomList = ({ rooms, activeRoom, setActiveRoom, activeUser, setActiveUser 
                             {room.name}
                         </div>
                     </Link>
-                    {activeRoom.key === room.key ? null : 
+                    {activeRoom.key === room.key || !activeUser ? null : 
                         <Button className="button" onClick={() => removeRoom(room.key)} style={{flex: 0, fontSize: 14}}>
                             <i className="far fa-trash-alt"></i>
                         </Button>

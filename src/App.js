@@ -37,7 +37,7 @@ const App = () => {
           <Switch>
             <Route exact path="/">
               <div style={{fontSize: 20, margin: 'auto 0'}}>
-                Select a room to get started
+                {activeUser ? 'Select a room to chat' : 'Sign in to get started'}
               </div>
             </Route>
             <Route path="/room/:roomId">
