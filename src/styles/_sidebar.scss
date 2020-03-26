@@ -1,0 +1,48 @@
+.sidebar {
+  height: 100vh;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  overflow-y: auto;
+  padding: 15px;
+  box-shadow:
+    0 4.3px 9.3px rgba(0, 0, 0, 0.059),
+    0 12.8px 26.7px rgba(0, 0, 0, 0.085),
+    0 30.2px 64.5px rgba(0, 0, 0, 0.111),
+    0 82px 200px rgba(0, 0, 0, 0.17);
+
+  .room-list {
+    margin: 10px 0;
+  }
+
+  .list-container {
+    position: relative;
+    display: flex;
+    width: 100%;
+
+    button {
+      display: none;
+    }
+
+    &:hover {
+      button {
+        display: inline-flex;
+      }
+    }
+  }
+  .room-name {
+    border-radius: 5px;
+    padding: 10px 5px;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .sidebar-actions {
+    margin-top: auto;
+
+    .login-container {
+      margin-top: 10px;
+    }
+  }
+}

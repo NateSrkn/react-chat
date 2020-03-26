@@ -1,33 +1,61 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { FirebaseContext } from '../utils/firebase'
-import 'firebase/firestore'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import MessageList from './MessageList'
+import { TextInput } from './TextInput';
+import { Button } from './Button'
+import { db } from '../utils/firebase'
+import * as moment from 'moment'
 
-const Room = ({ activeUser }) => {
+const Room = ({ rooms, activeUser }) => {
   let { roomId } = useParams()
-  const firebase = useContext(FirebaseContext)
-  const roomsRef = firebase.firestore().collection('rooms')
-  let [room, setRoom] = useState([])
+  const room = rooms.find(item => item.key === roomId)
+  let [newMessage, setNewMessage] = useState('') 
 
-  useEffect(() => {
-    roomsRef.doc(roomId).onSnapshot(snapshot => {
-      setRoom(snapshot.data())
+  const handleChange = (event) => {
+    setNewMessage(event.target.value)
+  }
+
+const sendMessage = (event) => {
+    event.preventDefault()
+    if(!activeUser) return alert('Please sign in to send a message')
+    db.ref(`rooms/${roomId}/messages/`).push({
+            value: newMessage,
+            sentBy: activeUser,
+            sentAt: moment().format()
     })
-  })
+    setNewMessage('')
+  }
 
   return (
-    <div className="column is-12">
-      {room ? 
-      <div className="">
-        <p className="subtitle has-text-white is-paddingless is-marginless">
-          {room.name}
-        </p> 
-        <p className="subtitle is-6 has-text-white">Created by: {room.createdBy}</p>
-        <MessageList roomId={roomId} activeUser={activeUser} messages={room.messages} />
+    
+      <div className="chat-container">
+        {room ? 
+          <React.Fragment>
+            <div className="chat-header">
+              <span>{room.name}</span> 
+              <div>Created by: {room.createdBy}</div>
+            </div>
+            <div className="chat-body">
+              <div className="messages">
+                <MessageList messagesObj={room.messages} />
+              </div>
+            </div>
+            <div className="chat-footer">
+              <form onSubmit={sendMessage}>
+                  <TextInput 
+                  className="input"
+                  placeholder="Enter your message"
+                  onChange={handleChange}
+                  value={newMessage}
+                  />
+                  <Button>
+                      Send
+                  </Button>
+              </form>
+            </div>
+          </React.Fragment>
+        : ''}
       </div>
-      : ''}
-    </div>
   )
 }
 

@@ -1,41 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import './styles/App.css';
-import './styles/RoomList.css';
-import './styles/UserLogin.css';
-import './styles/MessageList.css';
+import React, { useState, useEffect } from 'react';
 import Room from './components/Room'
 import RoomList from './components/RoomList.js'
-import MessageList from './components/MessageList.js'
-import UserLogin from './components/UserLogin.js'
 import { Switch, Route } from 'react-router-dom';
+import { auth } from './utils/firebase'
 import './styles/main.scss'
 
-const App = () => {
-  const [activeRoom, setActiveRoom] = useState('')
-  const [activeUser, setActiveUser] = useState('Nathan Sorkin')
+import { db } from './utils/firebase'
 
-  return(
+const App = () => {
+  const [rooms, setRooms] = useState([])
+  const [activeRoom, setActiveRoom] = useState('')
+  const [activeUser, setActiveUser] = useState('')
+
+  useEffect(() => {
+    db.ref('rooms').on('value', snapshot => {
+        let rooms = []
+        snapshot.forEach((snap) => {
+            rooms.push({ key: snap.key, ...snap.val()})
+        })
+        setRooms(rooms)
+    })
+    auth.onAuthStateChanged((user => {
+      if(user) {
+        setActiveUser(user.displayName)
+      } else {
+        setActiveUser('')
+      }
+    }))
+  }, [])
+
+  return(  
     <div className="App">
-      <div className="columns">
-        <div className="column is-2 has-background-light">
-            <RoomList activeUser={activeUser} activeRoom={activeRoom} setActiveRoom={setActiveRoom} />
-        </div>
-        <div className="column is-10 has-background-dark hero is-fullheight">
-          <section className="section">
-          <div className="columns">
-            <Switch>
-              <Route exact path="/">
-                <h3 className="subtitle has-text-white">
-                  {/* {activeRoom ? <Room activeRoom={activeRoom} /> : 'Select a room to get started'} */}
-                </h3>
-              </Route>
-              <Route path="/room/:roomId">
-                <Room activeUser={activeUser} />
-              </Route>
-            </Switch>           
-          </div>
-          </section>
-        </div>
+      <div className="page-layout">
+        <RoomList activeUser={activeUser} setActiveUser={setActiveUser} rooms={rooms} activeRoom={activeRoom} setActiveRoom={setActiveRoom} />
+        <main className="main-container">
+          <Switch>
+            <Route exact path="/">
+              <div style={{fontSize: 20, margin: 'auto 0'}}>
+                Select a room to get started
+              </div>
+            </Route>
+            <Route path="/room/:roomId">
+              <Room rooms={rooms} activeUser={activeUser} />
+            </Route>
+          </Switch>
+        </main>
       </div>
     </div>
   )

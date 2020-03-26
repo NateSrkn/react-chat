@@ -1,37 +1,28 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { FirebaseContext } from '../utils/firebase'
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
-import 'firebase/firestore'
+import { Button } from './Button'
+import { TextInput } from './TextInput';
+import { db } from '../utils/firebase'
+import Authenticate from './Authenticate.js'
+import * as moment from 'moment'
 
-const RoomList = ({ activeRoom, activeUser, setActiveRoom }) => {
-    const firebase = useContext(FirebaseContext)
-    const roomsRef = firebase.firestore().collection('rooms')
-    const [rooms, setRooms] = useState(null)
+const RoomList = ({ rooms, activeRoom, setActiveRoom, activeUser, setActiveUser }) => {
     const [newRoomName, setNewRoomName] = useState('')
-
-    useEffect(() => {
-        roomsRef.onSnapshot(snapshot => {
-            let data = []
-            snapshot.forEach(doc => {
-                data.push({ id: doc.id, ...doc.data()})
-            })
-            setRooms(data)
-        })
-    }, [])
 
     const addRoom = (event) => {
         event.preventDefault()
         if(!newRoomName || !activeUser) return
-        roomsRef.add({
+        db.ref('rooms').push({
             name: newRoomName,
-            createdBy: activeUser
+            createdBy: activeUser,
+            createdAt: moment().format()
         })
         setNewRoomName('')
     }
 
     const removeRoom = (roomId) => {
         const response = window.confirm('Are you sure you want to delete this room?')
-        if(response) roomsRef.doc(roomId).delete()
+        if (response) db.ref(`rooms/${roomId}`).remove()
     }
 
     const handleChange = (event) => {
@@ -42,47 +33,48 @@ const RoomList = ({ activeRoom, activeUser, setActiveRoom }) => {
     const List = () => {
         return(
             rooms.map(room => (
-                <li onClick={() => setActiveRoom(room)} key={room.id}>
-                    <Link to={`/room/${room.id}`}>
-                        {room.name}
+                <li key={room.key} className="list-container">
+                    <Link to={`/room/${room.key}`} style={{width: '100%'}}>
+                        <div className="room-name" onClick={() => setActiveRoom(room)}>
+                            {room.name}
+                        </div>
                     </Link>
-                    <button disabled={activeRoom.id == room.id ? true : false} className="button" onClick={() => removeRoom(room.id)}>
-                        Delete
-                    </button>
+                    {activeRoom.key === room.key ? null : 
+                        <Button className="button" onClick={() => removeRoom(room.key)} style={{flex: 0, fontSize: 14}}>
+                            <i className="far fa-trash-alt"></i>
+                        </Button>
+                    }
                 </li>
             ))
         )
     }
 
     return (
-        <section className="section">
-            <aside className="menu">
-                <p className="menu-label is-pulled-left">
-                    Rooms
-                    <i class="fas fa-plus is-pulled-right"></i>
-                </p>
-                <ul className="menu-list">
-                    {rooms ? <List /> : 'Loading' }
-                </ul>
-                <form onSubmit={addRoom} style={{paddingTop: '20px'}}>
-                    <div className="field has-addons">
-                        <div className="control">
-                            <input 
-                            className="input"
-                            placeholder="Enter a room name"
-                            onChange={handleChange}
-                            value={newRoomName}
-                            type="text" />
-                        </div>
-                        <div className="control">
-                            <button className="button is-primary">
-                                Add Room
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </aside>
-        </section>
+        <div className="sidebar">
+            <div className="label">
+                Rooms
+            </div>
+            <ul className="room-list">
+                {rooms ? <List /> : 'Loading' }
+            </ul>
+            <div className="sidebar-actions">
+                {activeUser ?        
+                <form onSubmit={addRoom}>
+                    <TextInput 
+                    className="input"
+                    placeholder="Enter a room name"
+                    maxLength="15"
+                    onChange={handleChange}
+                    value={newRoomName}
+                        />
+                    <Button>
+                        Add Room
+                    </Button>
+                </form> 
+                : null}
+                <Authenticate setActiveUser={setActiveUser} activeUser={activeUser} />
+            </div>
+        </div>
     )
 }
 
