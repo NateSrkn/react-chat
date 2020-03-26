@@ -1,79 +1,81 @@
-import React, {Component} from 'react';
-import * as firebase from 'firebase';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
+import { Button } from './Button'
+import { TextInput } from './TextInput';
+import { db } from '../utils/firebase'
+import Authenticate from './Authenticate.js'
+import * as moment from 'moment'
 
-class RoomList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            rooms: [],
-            newRoomName: ""
-        }
-        this.roomsRef = firebase.database().ref('rooms');
-    }
+const RoomList = ({ rooms, activeRoom, setActiveRoom, activeUser, setActiveUser }) => {
+    const [newRoomName, setNewRoomName] = useState('')
 
-    componentDidMount() {
-        this.roomsRef.on('child_added', snapshot => {
-            const room = snapshot.val();
-            room.key = snapshot.key;
-            this.setState({ rooms: this.state.rooms.concat( room )})
-         });
-
-         this.roomsRef.on('child_removed', snapshot => {
-            const room = snapshot.val();
-            room.key = snapshot.key;
-            this.setState({ rooms: this.state.rooms.filter( function(value) {
-              return value.key !== room.key;
-            }) })
-          });
-    }
-
-    handleChange(e) {
-        this.setState({ newRoomName: e.target.value });
-      }
-    
-    addRoom(e){
-        e.preventDefault();
-        if(!this.state.newRoomName) {return alert("Please enter a room name!")}
-        this.roomsRef.push({
-            name : this.state.newRoomName
+    const addRoom = (event) => {
+        event.preventDefault()
+        if(!newRoomName || !activeUser) return
+        db.ref('rooms').push({
+            name: newRoomName,
+            createdBy: activeUser,
+            createdAt: moment().format()
         })
-        this.setState({
-            newRoomName: ''
-        })
+        setNewRoomName('')
     }
 
-    deleteRoom(e) {
-        e.preventDefault();
-        this.roomsRef.child(e.target.value).remove();
-      }
-
-    selectRoom(room) {
-        this.props.setActiveRoom(room)
+    const removeRoom = (roomId) => {
+        const response = window.confirm('Are you sure you want to delete this room?')
+        if (response) db.ref(`rooms/${roomId}`).remove()
     }
 
-    render () {
-        return (
-            <section className="room">
-            
-            {this.state.rooms.map((room, index) => 
-                <li key={index} className="room-choice">
-                    <button value={room.name} onClick={(e) => this.selectRoom(room)}>{room.name}</button>
-                    <button className="ion-android-close" value={room.key} onClick={(e) => this.deleteRoom(e)}></button>
+    const handleChange = (event) => {
+        event.preventDefault()
+        setNewRoomName(event.target.value)
+    }
+
+    const List = () => {
+        return(
+            rooms.map(room => (
+                <li key={room.key} className="list-container">
+                    <Link to={`/room/${room.key}`} style={{width: '100%'}}>
+                        <div className="room-name" onClick={() => setActiveRoom(room)}>
+                            {room.name}
+                        </div>
+                    </Link>
+                    {activeRoom.key === room.key ? null : 
+                        <Button className="button" onClick={() => removeRoom(room.key)} style={{flex: 0, fontSize: 14}}>
+                            <i className="far fa-trash-alt"></i>
+                        </Button>
+                    }
                 </li>
-            )}
-              <form onSubmit={e => this.addRoom(e)} autoComplete="off">
-                <input 
-                    id="new-room-input" 
-                    type="text"
-                    value={this.state.newRoomName}
-                    onChange={(e) => this.handleChange(e)}
-                    placeholder="Create a room"
-                    ></input>
-                <button className="ion-android-add"></button>
-            </form>
-        </section>
+            ))
         )
     }
+
+    return (
+        <div className="sidebar">
+            <div className="label">
+                Rooms
+            </div>
+            <ul className="room-list">
+                {rooms ? <List /> : 'Loading' }
+            </ul>
+            <div className="sidebar-actions">
+                {activeUser ?        
+                <form onSubmit={addRoom}>
+                    <TextInput 
+                    className="input"
+                    placeholder="Enter a room name"
+                    maxLength="15"
+                    onChange={handleChange}
+                    value={newRoomName}
+                        />
+                    <Button>
+                        Add Room
+                    </Button>
+                </form> 
+                : null}
+                <Authenticate setActiveUser={setActiveUser} activeUser={activeUser} />
+            </div>
+        </div>
+    )
 }
 
 export default RoomList

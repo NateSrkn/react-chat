@@ -1,66 +1,33 @@
-import React, {Component} from 'react';
-import * as firebase from 'firebase';
+import React from 'react';
+import * as moment from 'moment'
 
-class MessageList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            messages: [],
-            newMessageInput: ''
-        };
-        this.roomsRef = firebase.database().ref('messages');
-    }
-
-    componentDidMount() {
-        this.roomsRef.on('child_added', snapshot => {
-            const message = snapshot.val();
-            message.key = snapshot.key;
-            this.setState({ messages : this.state.messages.concat ( message )})
-        });
-    }
-
-    handleChange(e) {
-        this.setState({ newMessageInput: e.target.value })
-    }
-
-    createMessage(e) {
-        e.preventDefault();
-        if (!this.state.newMessageInput || this.props.activeRoom === null) {return alert("Theres no active room!")};
-        this.roomsRef.push({
-            content: this.state.newMessageInput,
-            roomId: this.props.activeRoom.key,
-            username: this.props.activeUser || "Guest",
-            sentAt: firebase.database.ServerValue.TIMESTAMP
-        })
-        this.setState({newMessageInput: ''})
-    }
-
-
-
-    render() {
+const MessageList = ({ messagesObj }) => {
+    const messages = messagesObj ? Object.values(messagesObj) : null
+    
+    const List = () => {
         return (
-            <div className="message-list">
-                <ul id="message-box">
-                    {this.props.activeRoom && this.state.messages
-                        .filter(message => message.roomId === this.props.activeRoom.key)
-                        .map((message, index) => (
-                            <li className="message" key={message.key}>
-                            {message.username}: {message.content} {message.sentAt}
-                            </li>
-                        ))}
-                </ul>
-                <form id="message-form" onSubmit={(e) => this.createMessage(e)} autoComplete="off">
-                    <input 
-                        id="message-input" 
-                        type="text" 
-                        value={this.state.newMessageInput}
-                        onChange={(e) => this.handleChange(e)} />
-                    <input id="send-button" type="submit" value="Send" />
-                </form>
-            </div>
+            <React.Fragment>
+                {messages.map((message, index) => (
+                    <div className="message" key={index}>
+                        <div className="message-sender">
+                            {message.sentBy}:
+                        </div>
+                        <div className="message-body">
+                            {message.value}
+                        </div>
+                        <div className="message-sent-at">
+                            {moment(message.sentAt).fromNow()}
+                        </div>
+                    </div>
+                ))}
+            </React.Fragment>
         )
     }
-    
+    return (
+        <React.Fragment>
+            {messages ? <List /> : 'Start a conversation'}
+        </React.Fragment>
+    )
 }
 
 export default MessageList
