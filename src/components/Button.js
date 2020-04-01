@@ -14,17 +14,11 @@ const ButtonContainer = styled.button`
   background: transparent;
   border: none;
   border-radius: 5px;
-  box-shadow:
-  0 4.3px 9.3px rgba(0, 0, 0, 0.059),
-  0 12.8px 26.7px rgba(0, 0, 0, 0.085),
-  0 30.2px 64.5px rgba(0, 0, 0, 0.111),
-  0 82px 200px rgba(0, 0, 0, 0.17);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: ease .2s;
 
   &:hover {
-    box-shadow:
-      0 4.3px 9.3px rgba(0, 0, 0, 0.059),
-      0 12.8px 26.7px rgba(0, 0, 0, 0.085);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: ease .2s;
   }
 `

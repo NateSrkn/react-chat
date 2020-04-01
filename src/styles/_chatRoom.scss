@@ -5,11 +5,7 @@
   display: flex;
   flex-direction: column;
   padding: 15px;
-  box-shadow:
-  0 4.3px 9.3px rgba(0, 0, 0, 0.059),
-  0 12.8px 26.7px rgba(0, 0, 0, 0.085),
-  0 30.2px 64.5px rgba(0, 0, 0, 0.111),
-  0 82px 200px rgba(0, 0, 0, 0.17);
+  box-shadow: $box-shadow;
 
   @media screen and (max-width: 550px) {
     width: 100%;
@@ -52,11 +48,7 @@
   }
 
   .chat-header {
-    box-shadow:
-    0 4.3px 9.3px rgba(0, 0, 0, 0.059),
-    0 12.8px 26.7px rgba(0, 0, 0, 0.085),
-    0 30.2px 64.5px rgba(0, 0, 0, 0.111),
-    0 82px 200px rgba(0, 0, 0, 0.17);
+    box-shadow: $box-shadow;
     padding: 15px;
     border-radius: 6px;
     span {
