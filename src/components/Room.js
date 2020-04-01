@@ -24,6 +24,7 @@ const Room = ({ rooms, activeUser }) => {
 const sendMessage = (event) => {
     event.preventDefault()
     if(!activeUser) return alert('Please sign in to send a message')
+    if(!newMessage) return alert('Please enter a message!')
     db.ref(`rooms/${roomId}/messages/`).push({
             value: newMessage,
             sentBy: activeUser,
