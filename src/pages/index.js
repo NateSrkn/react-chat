@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import { useCurrentUser } from "../hooks/useAuth";
+import { useCurrentUser, useSignIn } from "../hooks/useAuth";
 import { Loading } from "../components/common/Loading";
 import styled from "styled-components";
 import { Button } from "../components/common/Button";
@@ -39,7 +39,7 @@ export default function Home() {
         ) : (
           <CenteredWrapper>
             <Welcome>Howdy there.</Welcome>
-            <Button>Sign in with Google</Button>
+            <Button onClick={() => useSignIn()}>Sign in with Google</Button>
           </CenteredWrapper>
         )}
       </CenteredWrapper>

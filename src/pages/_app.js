@@ -1,4 +1,4 @@
-import "../styles/globals.scss";
+import "../styles/globals.css";
 import { useEffect, useState } from "react";
 import { Layout } from "../components/layouts/Layout";
 import { ThemeProvider } from "styled-components";
